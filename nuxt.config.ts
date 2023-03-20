@@ -4,8 +4,14 @@ export default defineNuxtConfig({
     build: {
         transpile: ['vuetify'],
    },
+   runtimeConfig:{
+    public: {
+        MODE: process.env.MODE
+    }
+   },
    modules: [
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    '@nuxtjs/supabase'
    ],
    app: {
     head: {

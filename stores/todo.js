@@ -4,6 +4,7 @@ export default defineStore("todos", {
   state: () => ({
     todoList: [],
     filterValue: "all",
+    showLoader: false
   }),
   getters: {
     filteredTasks: (state) => {
@@ -13,36 +14,49 @@ export default defineStore("todos", {
         return state.todoList.filter((todo) => !todo.isCompleted);
       }
       return state.todoList;
-    },
+    }
   },
   actions: {
-    addTodo(todo) {
-      this.todoList.push({
-        name: todo.value,
-        isCompleted: false,
-      });
-      this.updateTodoList();
+    async addTodo(todo) {
+      this.showLoader = true;
+      const {data,error} = await useSupabaseClient().from("todo").insert([{
+        "name" : todo.value,
+        "isCompleted" : false
+      }]);
+      await this.getTodoList();
+      this.showLoader = false;
     },
-    getTodoList() {
-      return localStorage.getItem("todo-list")
-        ? JSON.parse(localStorage.getItem("todo-list"))
-        : [];
+    async getTodoList() {
+      this.showLoader = true;
+      const client = useSupabaseClient();
+      const {data: todos} = await client.from("todo").select("*").order("id");
+      this.todoList = todos;
+      this.showLoader = false;
+      return todos;
     },
-    updateTodoList() {
-      localStorage.setItem("todo-list", JSON.stringify(this.todoList));
+    async updateTodoList(todo) {
+      this.showLoader = true;
+      const {data, error} = await useSupabaseClient().from("todo").update({name: todo.name, isCompleted: todo.isCompleted}).match({id: todo.id});
+      await this.getTodoList();
+      this.showLoader = false;
     },
-    removeTodo(t) {
-      this.todoList = this.todoList.filter((todo,index) => index !== t);
-      this.updateTodoList();
+    async removeTodo(t) {
+      this.showLoader = true;
+      const {data, error} = await useSupabaseClient().from("todo").delete().match({id: t});
+      await this.getTodoList();
+      this.showLoader = false;
     },
-    updateTodo(i, name) {
-      this.todoList.map((todo, index) => {
-        if(index === i) {
-          todo.name = name;
-        }
-        return todo;
-      })
-      this.updateTodoList();
+    async updateTodo(i, name) {
+      this.showLoader = true;
+      const {data, error} = await useSupabaseClient().from("todo").update({name: name}).match({id: i});
+      await this.getTodoList();
+      this.showLoader = false;
+    },
+    async completeTodo(todo) {
+      this.showLoader = true;
+      const {data, error} = await useSupabaseClient().from("todo").update({isCompleted: todo.isCompleted}).match({id: todo.id});
+      await this.getTodoList();
+      this.showLoader = false;
     }
   },
 });

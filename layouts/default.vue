@@ -1,13 +1,12 @@
 <template>
-    <v-container>
-        <slot></slot>
-
-    </v-container>
-    <TheBottomNavbar></TheBottomNavbar>
+  <v-container >
+    <slot></slot>
+  </v-container>
+  <TheBottomNavbar></TheBottomNavbar>
 </template>
 
 <style>
 body {
-    background-color: #FCFFE7;
+  background-color: #fcffe7;
 }
 </style>

@@ -2,11 +2,9 @@
   <head>
     <title>Nuxt Todo | Home</title>
   </head>
-  <div>
-    <AddTodo></AddTodo>
-  </div>
 
   <div>
+    <AddTodo></AddTodo>
     <ClientOnly>
       <v-select
         label="Filter"
@@ -18,17 +16,17 @@
         v-model="todoStore.filterValue"
       ></v-select>
     </ClientOnly>
-  </div>
+    <TheLoader v-if="useTodoStore().showLoader"></TheLoader>
 
-  <div>
-    <v-card class="todo-list">
+    <v-card class="todo-list" v-else>
+
       <v-table>
         <tbody v-if="filteredTasks && filteredTasks.length > 0">
           <TodoItem
             v-for="(todo, index) in filteredTasks"
             :key="index"
             :todo="todo"
-            :index="index"
+            :index="todo.id"
           ></TodoItem>
         </tbody>
         <tbody v-else>
@@ -46,7 +44,6 @@ import TodoItem from "~~/components/pages/TodoItem.vue";
 import useTodoStore from "../stores/todo";
 
 const todoStore = useTodoStore();
-
 const todoFilters = [
   { title: "All", value: "all" },
   { title: "Completed", value: "completed" },
@@ -55,10 +52,9 @@ const todoFilters = [
 
 const filteredTasks = computed(() => todoStore.filteredTasks);
 
-onMounted(() => {
-  todoStore.todoList = todoStore.getTodoList();
+onMounted(async () => {
+  todoStore.todoList = await todoStore.getTodoList();
 });
-
 </script>
 
 <style scoped>

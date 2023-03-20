@@ -40,7 +40,7 @@
           color="green"
           style="float: right"
           v-model="todo.isCompleted"
-          @change="useTodoStore().updateTodoList()"
+          @change="useTodoStore().updateTodoList(todo)"
         ></v-checkbox-btn>
       </td>
   </tr>
