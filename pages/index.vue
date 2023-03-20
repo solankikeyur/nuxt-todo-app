@@ -24,7 +24,7 @@
         <tbody v-if="filteredTasks && filteredTasks.length > 0">
           <TodoItem
             v-for="(todo, index) in filteredTasks"
-            :key="index"
+            :key="todo.id"
             :todo="todo"
             :index="todo.id"
           ></TodoItem>
