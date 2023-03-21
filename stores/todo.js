@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import userStore from "@/stores/user";
 
 export default defineStore("todos", {
   state: () => ({
@@ -21,15 +22,17 @@ export default defineStore("todos", {
       this.showLoader = true;
       const {data,error} = await useSupabaseClient().from("todo").insert([{
         "name" : todo.value,
-        "isCompleted" : false
+        "isCompleted" : false,
+        "user_id" : userStore().getUserId
       }]);
       await this.getTodoList();
       this.showLoader = false;
     },
     async getTodoList() {
+      // console.log(userStore().getUserId());
       this.showLoader = true;
       const client = useSupabaseClient();
-      const {data: todos} = await client.from("todo").select("*").order("id");
+      const {data: todos} = await client.from("todo").select("*").eq("user_id", userStore().getUserId).order("id");
       this.todoList = todos;
       this.showLoader = false;
       return todos;

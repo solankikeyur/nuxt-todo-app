@@ -42,3 +42,9 @@ a {
   text-decoration: none;
 }
 </style>
+
+<script setup>
+definePageMeta({
+  middleware: "auth"
+})
+</script>

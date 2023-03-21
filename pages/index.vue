@@ -43,6 +43,10 @@ import AddTodo from "~~/components/pages/TodoAdd.vue";
 import TodoItem from "~~/components/pages/TodoItem.vue";
 import useTodoStore from "../stores/todo";
 
+definePageMeta({
+  middleware: "auth"
+})
+
 const todoStore = useTodoStore();
 const todoFilters = [
   { title: "All", value: "all" },
@@ -55,6 +59,8 @@ const filteredTasks = computed(() => todoStore.filteredTasks);
 onMounted(async () => {
   todoStore.todoList = await todoStore.getTodoList();
 });
+
+
 </script>
 
 <style scoped>
