@@ -8,7 +8,7 @@
     </v-img>
     <div>
       <v-chip-group class="contact-btns my-4">
-        <a href="https://www.instagram.com/" target="_blank"><v-btn icon="mdi-instagram" class="mx-2 instagram" ></v-btn></a>
+        <a href="https://www.instagram.com/_solanki_keyur_" target="_blank"><v-btn icon="mdi-instagram" class="mx-2 instagram" ></v-btn></a>
         <a href="https://www.linkedin.com/in/solankikeyur8/" target="_blank"><v-btn icon="mdi-linkedin" class="mx-2 linkedin" ></v-btn></a>
         <a target="_blank" href="https://www.facebook.com/keyur.solanki.735"><v-btn icon="mdi-facebook" class="mx-2 facebook" ></v-btn></a>
       </v-chip-group>
